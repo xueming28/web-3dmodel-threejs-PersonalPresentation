@@ -1,23 +1,59 @@
-<!--
-  EYE FREE MODEL 3D BY Oscar creativo by OSCAR CREATIVO is licensed under Creative Commons Attribution.
-  Juvenile Teratophoneus curriei byrankinstudio is licensed under Creative Commons Attribution.
--->
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>A simple Three.JS App</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <header>
-      <h1>A simple three.js app</h1>
-    </header>
+<html lang="en">
 
-    <main>
-      <div id="container3D"></div>
-    </main>
+<head>
+  <meta charset="UTF-8">
+  <title>Full Page Scroll with 3D Model</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
 
-    <script type="module" src="js/main.js"></script>
-  </body>
+<body>
+  <!-- 页面内容 -->
+  <section>
+    <div class="content">
+      <h1>NVDIA RTX 5090<br>計算機結構：期末報告</h1>
+      <p>01257072 江宗衡<br>01257073 王斅民</p>
+  </section>
+  </div>
+  <section>
+    <div class="content">
+      <div class="left-panel">
+        <h2>架構：11 GPC × 85 TPC × 170 SM</h2>
+        <h3>GPC (Graphics Processing Cluster)</h3>
+        <p>-每組含多個 TPC<br>-負責圖形與幾何分配</p>
+        <h3>TPC (Texture Processing Cluster)</h3>
+        <p>-每組含 2 個 SM<br>-含紋理與光柵模組</p>
+        <h3>SM (Streaming Multiprocessor)</h3>
+        <p>-每組含 128 CUDA 核心 <br>-主要運算單元</p>
+      </div>
+
+      <div class="right-panel">
+        <h4>RTX 5090 (GB202)</h4>
+        <img src="/images/geforce-rtx-50-series-architecture-ari.png" alt="RTX 5090 GPU Die" class="chip">
+        <p class="specs">
+          NVIDIA Blackwell<br>
+          TSMC 4nm<br>
+          750 mm²
+        </p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <h1>Full Page Scroll <span># Section 3</span></h1>
+    <p>3</p>
+  </section>
+  <section>
+    <h1>Full Page Scroll <span># Section 4</span></h1>
+    <p>4</p>
+  </section>
+
+  <!-- 3D Canvas -->
+  <div id="container3D"></div>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Three.js Main JS -->
+  <script type="module" src="js/main.js"></script>
+</body>
+
 </html>
