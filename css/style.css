@@ -131,7 +131,7 @@ iframe.video {
 
 .img-comp-container {
   position: relative;
-  height: 810; /*should be the same height as the images*/
+  width: 70vw;
   filter: drop-shadow(0px 0px 50px rgba(255,255,255,0.2));
 }
 
@@ -145,6 +145,7 @@ iframe.video {
 .img-comp-img img {
   display: block;
   vertical-align: middle;
+  width: 70vw;
 }
 
 .img-comp-slider {
