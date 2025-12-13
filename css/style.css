@@ -184,19 +184,9 @@ iframe.video {
   overflow: hidden;
 }
 
-/* 被动画的元素 */
+/* 初始狀態 */
 .reveal > * {
   transform: translateY(120%);
+  transition: none; 
 }
 
-/* 当前页激活时播放动画 */
-section.active .reveal > * {
-  animation: slideUp 0.8s ease-out forwards;
-}
-
-/* 升起关键帧 */
-@keyframes slideUp {
-  to {
-    transform: translateY(0);
-  }
-}

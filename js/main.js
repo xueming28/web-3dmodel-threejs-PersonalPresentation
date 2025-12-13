@@ -141,41 +141,67 @@ $(function () { scrollPage(); });
 // ---------------- Animate Model (实时跟随滚动) ----------------
 function animate() {
   requestAnimationFrame(animate);
+
+  const scrollY = window.scrollY;
+  const vh = window.innerHeight;
+  const maxIndex = slides.length - 1;
+
+  let pageIndex = Math.min(Math.floor(scrollY / vh), maxIndex);
+  let progress = (scrollY % vh) / vh;
+
+  if (pageIndex === maxIndex) progress = 0;
+
+  // ----- 3D Model -----
   if (object) {
-    const scrollY = window.scrollY;
-    const pageHeight = window.innerHeight;
-    const maxIndex = slides.length - 1;
+    const next = Math.min(pageIndex + 1, maxIndex);
+    const lerp = (a, b, t) => a + (b - a) * t;
 
-    let pageIndex = Math.floor(scrollY / pageHeight);
-    pageIndex = Math.min(pageIndex, maxIndex); // 最后一页允许
+    const c = slides[pageIndex];
+    const n = slides[next];
 
-    let nextIndex = pageIndex + 1;
-    let progress = (scrollY % pageHeight) / pageHeight;
+    object.rotation.x = THREE.MathUtils.degToRad(lerp(c.x, n.x, progress));
+    object.rotation.y = THREE.MathUtils.degToRad(lerp(c.y, n.y, progress));
+    object.rotation.z = THREE.MathUtils.degToRad(lerp(c.z, n.z, progress));
 
-    // 如果是最后一页，不再插值
-    if (pageIndex === maxIndex) {
-      nextIndex = pageIndex;
-      progress = 0;
-    } else {
-      nextIndex = Math.min(nextIndex, maxIndex);
+    const s = lerp(c.scale, n.scale, progress);
+    object.scale.setScalar(s);
+
+    object.position.x = lerp(c.position.x, n.position.x, progress);
+    object.position.y = lerp(c.position.y, n.position.y, progress);
+    object.position.z = lerp(c.position.z, n.position.z, progress);
+  }
+
+  // ----- Text Reveal (同步 PPT 滾動) -----
+  document.querySelectorAll("section").forEach((section, i) => {
+  const items = section.querySelectorAll(".reveal > *");
+  const total = items.length;
+
+  items.forEach((el, idx) => {
+
+    // 已經滾過的頁 → 永遠顯示
+    if (i-1 < pageIndex) {
+      el.style.transform = "translateY(0)";
+      return;
     }
 
-    const lerp = (start, end, t) => start + (end - start) * t;
+    // 還沒到的頁 → 隱藏
+    if (i-1 > pageIndex) {
+      el.style.transform = "translateY(120%)";
+      return;
+    }
 
-    const current = slides[pageIndex];
-    const next = slides[nextIndex];
+    // 正在滾動的頁 → 同步動畫
+    // 將 reveal 均勻分佈在 0~1 的 progress 內
+    const start = idx / total;
+    const end = (idx + 1) / total;
 
-    object.rotation.x = THREE.MathUtils.degToRad(lerp(current.x, next.x, progress));
-    object.rotation.y = THREE.MathUtils.degToRad(lerp(current.y, next.y, progress));
-    object.rotation.z = THREE.MathUtils.degToRad(lerp(current.z, next.z, progress));
+    let localProgress = (progress - start) / (end - start);
+    localProgress = Math.min(Math.max(localProgress, 0), 1);
 
-    const s = lerp(current.scale, next.scale, progress);
-    object.scale.set(s, s, s);
+    el.style.transform = `translateY(${(1 - localProgress) * 120}%)`;
+  });
+});
 
-    object.position.x = lerp(current.position.x, next.position.x, progress);
-    object.position.y = lerp(current.position.y, next.position.y, progress);
-    object.position.z = lerp(current.position.z, next.position.z, progress);
-  }
   renderer.render(scene, camera);
 }
 animate();
@@ -211,7 +237,7 @@ function initComparisons() {
     window.addEventListener("mouseup", slideFinish);
     /* Or touched (for touch screens: */
     slider.addEventListener("touchstart", slideReady);
-     /* And released (for touch screens: */
+    /* And released (for touch screens: */
     window.addEventListener("touchend", slideFinish);
     function slideReady(e) {
       /* Prevent any other actions that may occur when moving over the image: */
