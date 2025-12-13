@@ -176,3 +176,27 @@ iframe.video {
   height: 100%;
   display: block;
 }
+
+/* ===== 文字升起动画 ===== */
+
+/* 遮挡容器 */
+.reveal {
+  overflow: hidden;
+}
+
+/* 被动画的元素 */
+.reveal > * {
+  transform: translateY(120%);
+}
+
+/* 当前页激活时播放动画 */
+section.active .reveal > * {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* 升起关键帧 */
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+  }
+}

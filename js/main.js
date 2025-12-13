@@ -86,19 +86,28 @@ let scrollLock = false;
 
 function pagination() {
   scrollLock = true;
+
+  // ⭐ 移除所有 active
+  $section.removeClass("active");
+
   $body.stop().animate({
     scrollTop: $section.eq(curPage).offset().top
   }, 1200, 'easeInOutCubic', function () {
     scrollLock = false;
 
+    // ⭐ 当前页加 active（触发动画）
+    $section.eq(curPage).addClass("active");
+
     // ---------------- 播放第四頁影片 ----------------
-    if (curPage === 3) {  // 第四頁 index = 3 (從 0 開始)
+    if (curPage === 3) {
       const iframe = document.getElementById('ytVideo');
-      // 透過 postMessage 控制播放
-      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      iframe.contentWindow.postMessage(
+        '{"event":"command","func":"playVideo","args":""}', '*'
+      );
     }
   });
 }
+
 
 
 function navigateUp() {
@@ -257,3 +266,7 @@ $(window).on('resize', function () {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// 初始页触发动画
+$section.eq(0).addClass("active");
+
