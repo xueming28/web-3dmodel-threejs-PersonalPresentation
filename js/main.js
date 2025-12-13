@@ -92,7 +92,7 @@ function pagination() {
 
   $body.stop().animate({
     scrollTop: $section.eq(curPage).offset().top
-  }, 1200, 'easeInOutCubic', function () {
+  }, 1800, 'easeInOutCubic', function () {
     scrollLock = false;
 
     // ⭐ 当前页加 active（触发动画）
@@ -190,10 +190,10 @@ function animate() {
       return;
     }
 
-    // 正在滾動的頁 → 同步動畫
-    // 將 reveal 均勻分佈在 0~1 的 progress 內
-    const start = idx / total;
-    const end = (idx + 1) / total;
+     // 正在滾動的頁 → 同步動畫
+    // 延遲到頁面滾動到一半才開始
+    const start = 0.3 + (idx / total) * 0.3;  // 起點在頁面一半
+    const end = 0.5 + ((idx + 1) / total) * 0.5; // 結束在頁面底部
 
     let localProgress = (progress - start) / (end - start);
     localProgress = Math.min(Math.max(localProgress, 0), 1);
@@ -295,4 +295,5 @@ $(window).on('resize', function () {
 
 // 初始页触发动画
 $section.eq(0).addClass("active");
+
 
