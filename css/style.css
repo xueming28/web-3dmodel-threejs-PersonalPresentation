@@ -127,12 +127,14 @@ iframe.video {
 
 }
 
-* {box-sizing: border-box;}
+* {
+  box-sizing: border-box;
+}
 
 .img-comp-container {
   position: relative;
   width: 70vw;
-  filter: drop-shadow(0px 0px 50px rgba(255,255,255,0.2));
+  filter: drop-shadow(0px 0px 50px rgba(255, 255, 255, 0.2));
 }
 
 .img-comp-img {
@@ -143,7 +145,6 @@ iframe.video {
 }
 
 .img-comp-img img {
-
   vertical-align: middle;
   width: 70vw;
 }
@@ -185,8 +186,7 @@ iframe.video {
 }
 
 /* 初始狀態 */
-.reveal > * {
+.reveal>* {
   transform: translateY(120%);
-  transition: none; 
+  transition: none;
 }
-
