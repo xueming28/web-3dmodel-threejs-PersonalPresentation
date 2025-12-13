@@ -1,6 +1,13 @@
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
 
+const cursor = document.getElementById('custom-cursor');
+
+document.addEventListener('mousemove', (e) => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
 // ---------------- Scene & Camera ----------------
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -49,7 +56,8 @@ scene.add(bottomLight);
 const slides = [
   { x: -40, y: 190, z: 60, scale: 0.5, position: { x: 0.9, y: 0, z: 0 } },
   { x: 0, y: 360, z: 0, scale: 0.3, position: { x: -1.5, y: -0.9, z: 0 } },
-  { x: -55, y: 540, z: 0, scale: 0.3, position: { x: 1.5, y: 0.9, z: 0 } },
+  { x: -60, y: 540, z: 0, scale: 0.8, position: { x: 0, y: 0.3, z: 0 } },
+  { x: -55, y: 540, z: -180, scale: 0.3, position: { x: 1.5, y: 0.9, z: 0 } },
   { x: 0, y: 540, z: -90, scale: 0.5, position: { x: 1.9, y: 0, z: 0 } },
   { x: 0, y: 720, z: -90, scale: 0.5, position: { x: 1.7, y: 0, z: 0 } },
   { x: 0, y: 720, z: -180, scale: 0.8, position: { x: 0, y: 0, z: 0 } }
@@ -99,7 +107,7 @@ function pagination() {
     $section.eq(curPage).addClass("active");
 
     // ---------------- 播放第四頁影片 ----------------
-    if (curPage === 3) {
+    if (curPage === 4) {
       const iframe = document.getElementById('ytVideo');
       iframe.contentWindow.postMessage(
         '{"event":"command","func":"playVideo","args":""}', '*'
@@ -173,34 +181,34 @@ function animate() {
 
   // ----- Text Reveal (同步 PPT 滾動) -----
   document.querySelectorAll("section").forEach((section, i) => {
-  const items = section.querySelectorAll(".reveal > *");
-  const total = items.length;
+    const items = section.querySelectorAll(".reveal > *");
+    const total = items.length;
 
-  items.forEach((el, idx) => {
+    items.forEach((el, idx) => {
 
-    // 已經滾過的頁 → 永遠顯示
-    if (i-1 < pageIndex) {
-      el.style.transform = "translateY(0)";
-      return;
-    }
+      // 已經滾過的頁 → 永遠顯示
+      if (i - 1 < pageIndex) {
+        el.style.transform = "translateY(0)";
+        return;
+      }
 
-    // 還沒到的頁 → 隱藏
-    if (i-1 > pageIndex) {
-      el.style.transform = "translateY(120%)";
-      return;
-    }
+      // 還沒到的頁 → 隱藏
+      if (i - 1 > pageIndex) {
+        el.style.transform = "translateY(120%)";
+        return;
+      }
 
-     // 正在滾動的頁 → 同步動畫
-    // 延遲到頁面滾動到一半才開始
-    const start = 0.3 + (idx / total) * 0.3;  // 起點在頁面一半
-    const end = 0.5 + ((idx + 1) / total) * 0.5; // 結束在頁面底部
+      // 正在滾動的頁 → 同步動畫
+      // 延遲到頁面滾動到一半才開始
+      const start = 0.3 + (idx / total) * 0.3;  // 起點在頁面一半
+      const end = 0.5 + ((idx + 1) / total) * 0.5; // 結束在頁面底部
 
-    let localProgress = (progress - start) / (end - start);
-    localProgress = Math.min(Math.max(localProgress, 0), 1);
+      let localProgress = (progress - start) / (end - start);
+      localProgress = Math.min(Math.max(localProgress, 0), 1);
 
-    el.style.transform = `translateY(${(1 - localProgress) * 120}%)`;
+      el.style.transform = `translateY(${(1 - localProgress) * 120}%)`;
+    });
   });
-});
 
   renderer.render(scene, camera);
 }

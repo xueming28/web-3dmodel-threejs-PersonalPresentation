@@ -40,19 +40,57 @@
           <p>-每組含 128 CUDA 核心 <br>-主要運算單元</p>
         </div>
       </div>
-
       <div class="right-panel">
         <div class="reveal">
           <h4>RTX 5090 (GB202)</h4>
         </div>
         <img src="/images/geforce-rtx-50-series-architecture-ari.png" alt="RTX 5090 GPU Die" class="chip">
-          <div class="reveal">
-            <p class="specs">
-              NVIDIA Blackwell<br>
-              TSMC 4nm<br>
-              750 mm²
-            </p>
-          </div>
+        <div class="reveal">
+          <p class="specs">
+            NVIDIA Blackwell<br>
+            TSMC 4nm<br>
+            750 mm²
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="grid-container">
+      <div class="grid-item">
+        <span class="highlight">4K 240Hz</span>
+        <span>Path Tracing</span>
+      </div>
+      <div class="grid-item">
+        <div class="spec-line">
+          <span>Neural Rendering</span>
+        </div>
+        <div class="spec-line">
+          <span>with</span>
+          <span class="highlight">DLSS 4</span>
+        </div>
+      </div>
+      <div class="grid-item">
+        <div class="spec-line">
+          <span class="highlight">3352</span>
+          <span class="unit">AI TOPS</span>
+        </div>
+        <div class="spec-line">
+          <span class="highlight">318</span>
+          <span class="unit">RT TFLOPS</span>
+        </div>
+        <div class="spec-line">
+          <span class="highlight">105</span>
+          <span class="unit">Shader TFLOPS</span>
+        </div>
+      </div>
+      <div class="grid-item">
+        <span class="highlight">32GB</span>
+        <span>G7</span>
+      </div>
+      <div class="grid-item">
+        <span class="highlight">512b</span>
+        <span>Memory Interface</span>
       </div>
     </div>
   </section>
@@ -66,7 +104,7 @@
     <div class="content">
       <h2>NVIDIA DLSS 4</h2>
       <iframe id="ytVideo" class="video"
-        src="https://www.youtube.com/embed/_YXbkGuw3O8?enablejsapi=1&controls=0&autoplay=0&loop=1&playlist=_YXbkGuw3O8&rel=0"
+        src="https://www.youtube.com/embed/_YXbkGuw3O8?enablejsapi=1&mute=1&controls=0&autoplay=0&loop=1&playlist=_YXbkGuw3O8&rel=0"
         title="YouTube video player" frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowfullscreen>
@@ -87,6 +125,8 @@
     </div>
   </section>
 
+  <div id="custom-cursor"></div>
+
   <!-- 3D Canvas -->
   <div id="container3D"></div>
 
@@ -95,6 +135,8 @@
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
   <!-- Three.js Main JS -->
   <script type="module" src="js/main.js"></script>
+
+  
 </body>
 
 </html>
