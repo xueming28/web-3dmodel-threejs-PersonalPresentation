@@ -66,8 +66,10 @@ const slides = [
   { x: -55, y: 540, z: -180, scale: 0.3, position: { x: 1.5, y: 0.9, z: 0 } },
   { x: 0, y: 540, z: -90, scale: 0.5, position: { x: 1.9, y: 0, z: 0 } },
   { x: 0, y: 720, z: -90, scale: 0.5, position: { x: 1.7, y: 0, z: 0 } },
-  { x: 0, y: 720, z: -180, scale: 0.8, position: { x: 0, y: 0, z: 0 } }
+  { x: 0, y: 720, z: -180, scale: 0.9, position: { x: 0, y: -0.2, z: 0 } }
 ];
+
+const LAST_PAGE_INDEX = slides.length - 1;
 
 // ---------------- Load Model ----------------
 let object;
@@ -144,10 +146,38 @@ function scrollPage() {
   });
 
   $(document).on("keydown", function (e) {
-    if (scrollLock) return;
-    if (e.which === 38) navigateUp();
-    else if (e.which === 40) navigateDown();
-  });
+  if (scrollLock) return;
+
+  // ↑ ↓ 原本的頁面控制
+  if (e.which === 38) {
+    navigateUp();
+    return;
+  }
+  if (e.which === 40) {
+    navigateDown();
+    return;
+  }
+
+  // ===== 數字鍵跳頁 =====
+  // 1~9：直接跳對應頁
+  if (e.which >= 49 && e.which <= 57) {
+    const page = e.which - 49; // '1' -> 0
+    if (page <= numOfPages) {
+      curPage = page;
+      pagination();
+    }
+    return;
+  }
+
+  // 0 → 第 10 頁（index 9）
+  if (e.which === 48) {
+    if (9 <= numOfPages) {
+      curPage = 9;
+      pagination();
+    }
+  }
+});
+
 }
 
 $(function () { scrollPage(); });
@@ -167,23 +197,48 @@ function animate() {
 
   // ----- 3D Model -----
   if (object) {
-    const next = Math.min(pageIndex + 1, maxIndex);
-    const lerp = (a, b, t) => a + (b - a) * t;
+    const isLastPage = pageIndex === LAST_PAGE_INDEX;
 
-    const c = slides[pageIndex];
-    const n = slides[next];
+    if (!isLastPage) {
+      // ===== 正常 scroll 插值 =====
+      const next = Math.min(pageIndex + 1, LAST_PAGE_INDEX);
+      const lerp = (a, b, t) => a + (b - a) * t;
 
-    object.rotation.x = THREE.MathUtils.degToRad(lerp(c.x, n.x, progress));
-    object.rotation.y = THREE.MathUtils.degToRad(lerp(c.y, n.y, progress));
-    object.rotation.z = THREE.MathUtils.degToRad(lerp(c.z, n.z, progress));
+      const c = slides[pageIndex];
+      const n = slides[next];
 
-    const s = lerp(c.scale, n.scale, progress);
-    object.scale.setScalar(s);
+      object.rotation.x = THREE.MathUtils.degToRad(lerp(c.x, n.x, progress));
+      object.rotation.y = THREE.MathUtils.degToRad(lerp(c.y, n.y, progress));
+      object.rotation.z = THREE.MathUtils.degToRad(lerp(c.z, n.z, progress));
 
-    object.position.x = lerp(c.position.x, n.position.x, progress);
-    object.position.y = lerp(c.position.y, n.position.y, progress);
-    object.position.z = lerp(c.position.z, n.position.z, progress);
+      const s = lerp(c.scale, n.scale, progress);
+      object.scale.setScalar(s);
+
+      object.position.x = lerp(c.position.x, n.position.x, progress);
+      object.position.y = lerp(c.position.y, n.position.y, progress);
+      object.position.z = lerp(c.position.z, n.position.z, progress);
+
+    } else {
+      // ===== 最後一頁：自動旋轉 =====
+      const last = slides[LAST_PAGE_INDEX];
+
+      // 固定在最後一個 slide 的位置與大小
+      object.scale.setScalar(last.scale);
+      object.position.set(
+        last.position.x,
+        last.position.y,
+        last.position.z
+      );
+
+      // 基準角度
+      object.rotation.x = THREE.MathUtils.degToRad(last.x);
+      object.rotation.z = THREE.MathUtils.degToRad(last.z);
+
+      // ⭐ 自動旋轉（Y 軸）
+      object.rotation.y += 0.003; // 速度可調
+    }
   }
+
 
   // ----- Text Reveal (同步 PPT 滾動) -----
   document.querySelectorAll("section").forEach((section, i) => {
@@ -347,6 +402,18 @@ function setupOverlay(triggerSelector, overlayId, imageSrc) {
 document.addEventListener('DOMContentLoaded', () => {
   setupOverlay('.chip', 'chip-overlay', '/images/NVIDIA-GeForce-RTX-5090-Founders-Edition_RTX-Blackwell-GB202-Fullchip.jpg');
   setupOverlay('.sm', 'sm-overlay', '/images/rtx-50-SM.jpg');
+});
+
+const trigger = document.querySelector('.compare-trigger');
+const overlay = document.querySelector('.compare-overlay');
+
+trigger.addEventListener('click', () => {
+  overlay.classList.add('active');
+});
+
+/* 點擊背景關閉 */
+overlay.addEventListener('click', () => {
+  overlay.classList.remove('active');
 });
 
 

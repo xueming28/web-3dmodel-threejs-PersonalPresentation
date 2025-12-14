@@ -80,6 +80,12 @@ section:nth-of-type(7) img {
   height: 70vh;
 }
 
+section:nth-of-type(8) .content {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
 section:nth-of-type(10) {
   background-image: linear-gradient(to bottom,
       rgba(0, 0, 0, 1) 0%,
@@ -95,6 +101,12 @@ section:nth-of-type(11) {
   background-color: black;
 }
 
+section:nth-of-type(12) h1 {
+  font-size: 20vw;
+  color: white;
+  opacity: 0.7;
+  text-align: center;
+}
 
 .content {
   padding-left: 4vw;
@@ -149,7 +161,7 @@ p {
 
 .right-panel img.sm {
   width: 90%;
-  margin-top: 5vh;
+  margin-top: 4vh;
 }
 
 
@@ -309,6 +321,76 @@ iframe.video {
 .overlay-active.active img {
   transform: scale(1);
 }
+
+
+/* Overlay */
+.compare-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.compare-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 展開容器 */
+.compare-track {
+  position: absolute;
+  right: 4vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  height: 100vh;
+
+  /* 用 vw 控制間距 */
+  gap: 1vw;
+}
+
+/* GPU 圖片（關鍵） */
+.compare-track .gpu {
+  width: 20vw;      
+  opacity: 0;
+
+  transform: translateX(0) scale(0.95);
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease;
+}
+
+/* Blackwell */
+.compare-overlay.active .gpu.blackwell {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Ada：左移 1 張 */
+.compare-overlay.active .gpu.ada {
+  opacity: 1;
+  transform: translateX(calc(-1 * (1vw)));
+  transition-delay: 0.15s;
+}
+
+/* Turing：左移 2 張 */
+.compare-overlay.active .gpu.turing {
+  opacity: 1;
+  transform: translateX(calc(-2 * (1vw)));
+  transition-delay: 0.3s;
+}
+
+/* Pascal：左移 3 張 */
+.compare-overlay.active .gpu.pascal {
+  opacity: 1;
+  transform: translateX(calc(-3 * (1vw)));
+  transition-delay: 0.45s;
+}
+
 
 
 /* 3D Canvas */
