@@ -26,10 +26,6 @@ section:nth-of-type(1) {
 }
 
 section:nth-of-type(2) {
-  background: linear-gradient(black 20%, #111 50%, black 80%);
-}
-
-section:nth-of-type(3) {
   background-color: black;
   color: #fff;
   display: flex;
@@ -40,7 +36,51 @@ section:nth-of-type(3) {
   padding-bottom: 5vh;
 }
 
-section:nth-of-type(5) {
+section:nth-of-type(3) {
+  background: linear-gradient(black 20%, #111 50%, black 80%);
+}
+
+section:nth-of-type(3) .content {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+section:nth-of-type(4) {
+  background: linear-gradient(black 20%, #111 50%, black 80%);
+}
+
+section:nth-of-type(4) .content {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+section:nth-of-type(5) .content {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+section:nth-of-type(6) .content {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+section:nth-of-type(7) {
+  background: linear-gradient(black 0%,#404040 15%, #404040 85%, black 100%);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section:nth-of-type(7) img {
+  height: 70vh;
+}
+
+section:nth-of-type(10) {
   background-image: linear-gradient(to bottom,
       rgba(0, 0, 0, 1) 0%,
       rgba(0, 0, 0, 0) 30%,
@@ -51,7 +91,7 @@ section:nth-of-type(5) {
   background-position: center bottom;
 }
 
-section:nth-of-type(6) {
+section:nth-of-type(11) {
   background-color: black;
 }
 
@@ -89,11 +129,6 @@ p {
   line-height: 1.5;
 }
 
-section:nth-of-type(2) .content {
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
 
 /* 右侧图片区 */
 .right-panel {
@@ -106,6 +141,17 @@ section:nth-of-type(2) .content {
   width: 90%;
   margin-bottom: 1rem;
 }
+
+.right-panel img.GPC {
+  width: 90%;
+  margin-bottom: 1rem;
+}
+
+.right-panel img.sm {
+  width: 90%;
+  margin-top: 5vh;
+}
+
 
 .right-panel h4 {
   font-size: 4vh;
@@ -228,6 +274,43 @@ iframe.video {
   opacity: 0.85;
 }
 
+/* 點擊後的全畫面容器 */
+.overlay-active {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 9999;
+}
+
+/* 顯示狀態 */
+.overlay-active.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 圖片本體 */
+.overlay-active img {
+  max-width: 90vw;
+  max-height: 90vh;
+
+  transform: scale(0);
+  transform-origin: center center;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 展開動畫 */
+.overlay-active.active img {
+  transform: scale(1);
+}
+
+
 /* 3D Canvas */
 #container3D {
   position: fixed;
@@ -267,7 +350,7 @@ iframe.video {
   border-radius: 50%;
   background-color: red;
 
-  pointer-events: none; 
+  pointer-events: none;
   z-index: 9999;
 
   filter: drop-shadow(0px 0px 15px rgba(255, 0, 0, 1));

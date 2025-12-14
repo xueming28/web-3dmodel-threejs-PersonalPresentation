@@ -8,6 +8,7 @@ document.addEventListener('mousemove', (e) => {
   cursor.style.top = e.clientY + 'px';
 });
 
+
 // ---------------- Scene & Camera ----------------
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -55,8 +56,13 @@ scene.add(bottomLight);
 // ---------------- Slides Presets ----------------
 const slides = [
   { x: -40, y: 190, z: 60, scale: 0.5, position: { x: 0.9, y: 0, z: 0 } },
+  { x: -60, y: 180, z: 0, scale: 0.8, position: { x: 0, y: 0.3, z: 0 } },
   { x: 0, y: 360, z: 0, scale: 0.3, position: { x: -1.5, y: -0.9, z: 0 } },
-  { x: -60, y: 540, z: 0, scale: 0.8, position: { x: 0, y: 0.3, z: 0 } },
+  { x: 110, y: 360, z: 0, scale: 0.3, position: { x: 1.5, y: -0.9, z: 0 } },
+  { x: -40, y: 190, z: 20, scale: 0.35, position: { x: -1.5, y: -0.7, z: 0 } },
+  { x: -60, y: 180, z: 0, scale: 0.6, position: { x: 0, y: -0.7, z: 0 } },
+  { x: 0, y: 250, z: 90, scale: 0.5, position: { x: 1.9, y: 0, z: 0 } },
+  { x: 0, y: 360, z: 0, scale: 0.3, position: { x: -1.5, y: -0.9, z: 0 } },
   { x: -55, y: 540, z: -180, scale: 0.3, position: { x: 1.5, y: 0.9, z: 0 } },
   { x: 0, y: 540, z: -90, scale: 0.5, position: { x: 1.9, y: 0, z: 0 } },
   { x: 0, y: 720, z: -90, scale: 0.5, position: { x: 1.7, y: 0, z: 0 } },
@@ -106,8 +112,8 @@ function pagination() {
     // ⭐ 当前页加 active（触发动画）
     $section.eq(curPage).addClass("active");
 
-    // ---------------- 播放第四頁影片 ----------------
-    if (curPage === 4) {
+    // ---------------- 播放影片 ----------------
+    if (curPage === 9) {
       const iframe = document.getElementById('ytVideo');
       iframe.contentWindow.postMessage(
         '{"event":"command","func":"playVideo","args":""}', '*'
@@ -216,83 +222,133 @@ animate();
 
 // ---------------- Image Compare Slider ----------------
 function initComparisons() {
-  var x, i;
-  /* Find all elements with an "overlay" class: */
-  x = document.getElementsByClassName("img-comp-overlay");
-  for (i = 0; i < x.length; i++) {
-    /* Once for each "overlay" element:
-    pass the "overlay" element as a parameter when executing the compareImages function: */
-    compareImages(x[i]);
+  const overlays = document.getElementsByClassName("img-comp-overlay");
+
+  for (let i = 0; i < overlays.length; i++) {
+    compareImages(overlays[i]);
   }
+
   function compareImages(img) {
-    var slider, img, clicked = 0, w, h;
-    /* Get the width and height of the img element */
-    w = img.offsetWidth;
-    h = img.offsetHeight;
-    /* Set the width of the img element to 50%: */
-    img.style.width = (w / 2) + "px";
-    /* Create slider: */
+    let slider;
+    let clicked = false;
+    let w = img.offsetWidth;
+    let h = img.offsetHeight;
+    let animated = false; // ⭐ 防止重播動畫
+
+    // ⭐ 初始在最左
+    img.style.width = "0px";
+
+    // 建立滑塊
     slider = document.createElement("DIV");
-    slider.setAttribute("class", "img-comp-slider");
-    /* Insert slider */
+    slider.className = "img-comp-slider";
     img.parentElement.insertBefore(slider, img);
-    /* Position the slider in the middle: */
+
     slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
-    slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
-    /* Execute a function when the mouse button is pressed: */
+    slider.style.left = "0px";
+
+    // ---------------- 自動滑動到中間 ----------------
+    function autoSlide() {
+      if (animated) return;
+      animated = true;
+
+      const target = w / 2;
+      let current = 0;
+      const speed = w / 300; // ⭐ 控制動畫速度（數字越小越慢）
+
+      function animate() {
+        current += speed;
+        if (current >= target) {
+          slide(target);
+          return;
+        }
+        slide(current);
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    // ⭐ 只在該 section 變成 active 時播放
+    const section = img.closest("section");
+    const observer = new MutationObserver(() => {
+      if (section.classList.contains("active")) {
+        autoSlide();
+      }
+    });
+
+    observer.observe(section, { attributes: true });
+
+    // ---------------- 拖曳邏輯 ----------------
     slider.addEventListener("mousedown", slideReady);
-    /* And another function when the mouse button is released: */
     window.addEventListener("mouseup", slideFinish);
-    /* Or touched (for touch screens: */
     slider.addEventListener("touchstart", slideReady);
-    /* And released (for touch screens: */
     window.addEventListener("touchend", slideFinish);
+
     function slideReady(e) {
-      /* Prevent any other actions that may occur when moving over the image: */
       e.preventDefault();
-      /* The slider is now clicked and ready to move: */
-      clicked = 1;
-      /* Execute a function when the slider is moved: */
+      clicked = true;
       window.addEventListener("mousemove", slideMove);
       window.addEventListener("touchmove", slideMove);
     }
+
     function slideFinish() {
-      /* The slider is no longer clicked: */
-      clicked = 0;
+      clicked = false;
     }
+
     function slideMove(e) {
-      var pos;
-      /* If the slider is no longer clicked, exit this function: */
-      if (clicked == 0) return false;
-      /* Get the cursor's x position: */
-      pos = getCursorPos(e)
-      /* Prevent the slider from being positioned outside the image: */
-      if (pos < 0) pos = 0;
-      if (pos > w) pos = w;
-      /* Execute a function that will resize the overlay image according to the cursor: */
+      if (!clicked) return;
+      let pos = getCursorPos(e);
+      pos = Math.max(0, Math.min(pos, w));
       slide(pos);
     }
+
     function getCursorPos(e) {
-      var a, x = 0;
-      e = (e.changedTouches) ? e.changedTouches[0] : e;
-      /* Get the x positions of the image: */
-      a = img.getBoundingClientRect();
-      /* Calculate the cursor's x coordinate, relative to the image: */
-      x = e.pageX - a.left;
-      /* Consider any page scrolling: */
-      x = x - window.pageXOffset;
-      return x;
+      e = e.changedTouches ? e.changedTouches[0] : e;
+      const rect = img.getBoundingClientRect();
+      return e.pageX - rect.left - window.pageXOffset;
     }
+
     function slide(x) {
-      /* Resize the image: */
       img.style.width = x + "px";
-      /* Position the slider: */
-      slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+      slider.style.left = (x - slider.offsetWidth / 2) + "px";
     }
   }
 }
 
 initComparisons();
+
+
+function setupOverlay(triggerSelector, overlayId, imageSrc) {
+  const trigger = document.querySelector(triggerSelector);
+  const overlay = document.getElementById(overlayId);
+
+  if (!trigger || !overlay) {
+    console.warn(`Overlay setup skipped: ${triggerSelector} or ${overlayId} not found`);
+    return;
+  }
+
+  const overlayImg = overlay.querySelector('img');
+  overlayImg.src = imageSrc;
+
+  trigger.addEventListener('click', () => {
+    const rect = trigger.getBoundingClientRect();
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
+
+    overlayImg.style.transformOrigin = `${originX}px ${originY}px`;
+    overlay.classList.add('active');
+  });
+
+  overlay.addEventListener('click', () => {
+    overlay.classList.remove('active');
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setupOverlay('.chip', 'chip-overlay', '/images/NVIDIA-GeForce-RTX-5090-Founders-Edition_RTX-Blackwell-GB202-Fullchip.jpg');
+  setupOverlay('.sm', 'sm-overlay', '/images/rtx-50-SM.jpg');
+});
+
 
 // ---------------- Resize ----------------
 $(window).on('resize', function () {

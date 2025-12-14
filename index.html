@@ -13,46 +13,6 @@
     <div class="content">
       <h1>NVDIA RTX 5090<br>計算機結構：期末報告</h1>
       <p>01257072 江宗衡<br>01257073 王斅民</p>
-  </section>
-  </div>
-  <section>
-    <div class="content">
-      <div class="left-panel">
-        <div class="reveal">
-          <h2>架構：11 GPC × 85 TPC × 170 SM</h2>
-        </div>
-        <div class="reveal">
-          <h3>GPC (Graphics Processing Cluster)</h3>
-        </div>
-        <div class="reveal">
-          <p>-每組含多個 TPC<br>-負責圖形與幾何分配</p>
-        </div>
-        <div class="reveal">
-          <h3>TPC (Texture Processing Cluster)</h3>
-        </div>
-        <div class="reveal">
-          <p>-每組含 2 個 SM<br>-含紋理與光柵模組</p>
-        </div>
-        <div class="reveal">
-          <h3>SM (Streaming Multiprocessor)</h3>
-        </div>
-        <div class="reveal">
-          <p>-每組含 128 CUDA 核心 <br>-主要運算單元</p>
-        </div>
-      </div>
-      <div class="right-panel">
-        <div class="reveal">
-          <h4>RTX 5090 (GB202)</h4>
-        </div>
-        <img src="/images/geforce-rtx-50-series-architecture-ari.png" alt="RTX 5090 GPU Die" class="chip">
-        <div class="reveal">
-          <p class="specs">
-            NVIDIA Blackwell<br>
-            TSMC 4nm<br>
-            750 mm²
-          </p>
-        </div>
-      </div>
     </div>
   </section>
   <section>
@@ -96,6 +56,140 @@
   </section>
   <section>
     <div class="content">
+      <div class="left-panel">
+        <div class="reveal">
+          <h2>架構：11 GPC × 85 TPC × 170 SM</h2>
+        </div>
+        <div class="reveal">
+          <h3>GPC (Graphics Processing Cluster)</h3>
+        </div>
+        <div class="reveal">
+          <p>-每組含多個 TPC<br>-負責圖形與幾何分配</p>
+        </div>
+        <div class="reveal">
+          <h3>TPC (Texture Processing Cluster)</h3>
+        </div>
+        <div class="reveal">
+          <p>-每組含 2 個 SM<br>-含紋理與光柵模組</p>
+        </div>
+        <div class="reveal">
+          <h3>SM (Streaming Multiprocessor)</h3>
+        </div>
+        <div class="reveal">
+          <p>-每組含 128 CUDA 核心 <br>-主要運算單元</p>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="reveal">
+          <h4>RTX 5090 (GB202)</h4>
+        </div>
+        <img src="/images/geforce-rtx-50-series-architecture-ari.png" alt="RTX 5090 GPU Die" class="chip">
+        <div class="reveal">
+          <p class="specs">
+            NVIDIA Blackwell<br>
+            TSMC 4nm<br>
+            750 mm²
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="content">
+      <div class="left-panel">
+        <div class="reveal">
+          <h2>Blackwell GPU</h2>
+        </div>
+        <div class="reveal">
+          <h3>GPC (Graphics Processing Cluster)</h3>
+        </div>
+        <div class="reveal">
+          <p>-包括 1 個專用的光柵引擎<br>-2 個光柵操作 (ROP) 分區</p>
+        </div>
+        <div class="reveal">
+          <h3>每個ROP (Raster Operations Units)分區包含</h3>
+        </div>
+        <div class="reveal">
+          <p>- 8 個單獨的 ROP 單元<br>- 8 個 TPC</p>
+        </div>
+        <div class="reveal">
+          <h3>每個 TPC 包括</h3>
+        </div>
+        <div class="reveal">
+          <p>- 1 個 PolyMorph 引擎 <br>- 2 個 SM 單元</p>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="reveal">
+          <h4>GPC</h4>
+        </div>
+        <img src="/images/rtx-50-GPC.jpg" alt="RTX 5090 GPU Die GPC" class="GPC">
+        <div class="reveal">
+          <p class="specs">
+            96MB L2 Cache
+          </p>
+        </div>
+      </div>
+  </section>
+  <section>
+    <div class="content">
+      <div class="left-panel">
+        <div class="reveal">
+          <h2>SM (Streaming Multiprocessor)</h2>
+        </div>
+        <div class="reveal">
+          <h3>完整的 GB202 晶片包含</h3>
+        </div>
+        <div class="reveal">
+          <p>-192 個 SM</p>
+        </div>
+        <div class="reveal">
+          <h3>每個 SM 包括</h3>
+        </div>
+        <div class="reveal">
+          <p>- 128 個 CUDA 核心</p>
+        </div>
+        <div class="reveal">
+          <p>- 4 個 Blackwell 第五代 Tensor Core</p>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="reveal">
+          <h4>SM</h4>
+        </div>
+        <img src="/images/rtx-50-SM.jpg" alt="RTX 5090 GPU Die SM" class="sm">
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="content">
+      <div class="left-panel">
+        <div class="reveal">
+          <p>- 1 個 256 KB 暫存器</p>
+        </div>
+        <div class="reveal">
+          <p>- 128 KB 的 L1/共用記憶體</p>
+        </div>
+        <div class="reveal">
+          <p>- 4 個 Texture Units</p>
+        </div>
+        <div class="reveal">
+          <p>- 1 個 Blackwell 第四代 RT Core</p>
+        </div>
+      </div>
+      <div class="right-panel">
+      </div>
+    </div>
+  </section>
+  <section>
+    <img src="/images/ADA-SM-VS-BLACKWELL-SM.jpg" alt="ada SM compare Black Well SM">
+  </section>
+  <section>
+    <h2>7</h2>
+  </section>
+
+  <section>
+    <div class="content">
       <h2>效能</h2>
       <img src="/images/geforce-rtx-5090-perf-chart-editors-day.png" alt="RTX 5090 GPU Chart" class="chart">
     </div>
@@ -124,8 +218,20 @@
       </div>
     </div>
   </section>
- <section></section>
+  <section></section>
   <div id="custom-cursor"></div>
+
+  <!-- Chip overlay -->
+  <div class="overlay-active" id="chip-overlay">
+    <img src="/images/NVIDIA-GeForce-RTX-5090-Founders-Edition_RTX-Blackwell-GB202-Fullchip.jpg">
+  </div>
+
+  <!-- SM overlay -->
+  <div class="overlay-active" id="sm-overlay">
+    <img src="/images/rtx-50-SM.jpg">
+  </div>
+
+
 
   <!-- 3D Canvas -->
   <div id="container3D"></div>
@@ -136,7 +242,7 @@
   <!-- Three.js Main JS -->
   <script type="module" src="js/main.js"></script>
 
-  
+
 </body>
 
 </html>
