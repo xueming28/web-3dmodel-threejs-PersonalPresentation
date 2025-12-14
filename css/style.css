@@ -80,6 +80,9 @@ section:nth-of-type(7) img {
   height: 70vh;
 }
 
+section:nth-of-type(8) img {
+  height: 80vh;
+}
 section:nth-of-type(8) .content {
   display: flex;
   justify-content: space-between;
