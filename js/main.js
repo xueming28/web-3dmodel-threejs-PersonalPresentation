@@ -62,7 +62,8 @@ const slides = [
   { x: -40, y: 190, z: 20, scale: 0.35, position: { x: -1.5, y: -0.7, z: 0 } },
   { x: -60, y: 180, z: 0, scale: 0.6, position: { x: 0, y: -0.7, z: 0 } },
   { x: 0, y: 250, z: 90, scale: 0.5, position: { x: 1.9, y: 0, z: 0 } },
-  { x: 0, y: 360, z: 0, scale: 0.3, position: { x: -1.5, y: -0.9, z: 0 } },
+  { x: -50, y: 360, z: -40, scale: 0.4, position: { x: -1.5, y: -0.7, z: 0 } },
+  { x: 0, y: 540, z: 0, scale: 0.4, position: { x: -1.5, y: -0.9, z: 0 } },
   { x: -55, y: 540, z: -180, scale: 0.3, position: { x: 1.5, y: 0.9, z: 0 } },
   { x: 0, y: 540, z: -90, scale: 0.5, position: { x: 1.9, y: 0, z: 0 } },
   { x: 0, y: 720, z: -90, scale: 0.5, position: { x: 1.7, y: 0, z: 0 } },
@@ -115,7 +116,7 @@ function pagination() {
     $section.eq(curPage).addClass("active");
 
     // ---------------- 播放影片 ----------------
-    if (curPage === 9) {
+    if (curPage === 10) {
       const iframe = document.getElementById('ytVideo');
       iframe.contentWindow.postMessage(
         '{"event":"command","func":"playVideo","args":""}', '*'
@@ -146,37 +147,37 @@ function scrollPage() {
   });
 
   $(document).on("keydown", function (e) {
-  if (scrollLock) return;
+    if (scrollLock) return;
 
-  // ↑ ↓ 原本的頁面控制
-  if (e.which === 38) {
-    navigateUp();
-    return;
-  }
-  if (e.which === 40) {
-    navigateDown();
-    return;
-  }
-
-  // ===== 數字鍵跳頁 =====
-  // 1~9：直接跳對應頁
-  if (e.which >= 49 && e.which <= 57) {
-    const page = e.which - 49; // '1' -> 0
-    if (page <= numOfPages) {
-      curPage = page;
-      pagination();
+    // ↑ ↓ 原本的頁面控制
+    if (e.which === 38) {
+      navigateUp();
+      return;
     }
-    return;
-  }
-
-  // 0 → 第 10 頁（index 9）
-  if (e.which === 48) {
-    if (9 <= numOfPages) {
-      curPage = 9;
-      pagination();
+    if (e.which === 40) {
+      navigateDown();
+      return;
     }
-  }
-});
+
+    // ===== 數字鍵跳頁 =====
+    // 1~9：直接跳對應頁
+    if (e.which >= 49 && e.which <= 57) {
+      const page = e.which - 49; // '1' -> 0
+      if (page <= numOfPages) {
+        curPage = page;
+        pagination();
+      }
+      return;
+    }
+
+    // 0 → 第 10 頁（index 9）
+    if (e.which === 48) {
+      if (9 <= numOfPages) {
+        curPage = 9;
+        pagination();
+      }
+    }
+  });
 
 }
 
@@ -414,6 +415,37 @@ trigger.addEventListener('click', () => {
 /* 點擊背景關閉 */
 overlay.addEventListener('click', () => {
   overlay.classList.remove('active');
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const triggerImg = document.querySelector('img[src="/images/neural-rendering.jpg"]');
+  const overlay = document.getElementById('neural-overlay');
+  const images = Array.from(overlay.querySelectorAll('.nr-img'));
+
+  let currentIndex = 0;
+
+  if (!triggerImg) return;
+
+  // 點擊 neural-rendering.jpg → 開啟 overlay + 顯示第一張
+  triggerImg.addEventListener('click', () => {
+    overlay.classList.add('active');
+    currentIndex = 0;
+
+    images.forEach(img => img.classList.remove('active'));
+    images[currentIndex].classList.add('active');
+  });
+
+  // 每次點擊 overlay → 關掉一張
+  overlay.addEventListener('click', () => {
+    images[currentIndex].classList.remove('active');
+    currentIndex++;
+
+    if (currentIndex < images.length) {
+      images[currentIndex].classList.add('active');
+    } else {
+      overlay.classList.remove('active');
+    }
+  });
 });
 
 

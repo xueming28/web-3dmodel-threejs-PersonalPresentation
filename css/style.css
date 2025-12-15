@@ -89,7 +89,17 @@ section:nth-of-type(8) .content {
   box-sizing: border-box;
 }
 
-section:nth-of-type(10) {
+section:nth-of-type(9) .content {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+section:nth-of-type(9) img {
+  width: 35vw;
+}
+
+section:nth-of-type(11) {
   background-image: linear-gradient(to bottom,
       rgba(0, 0, 0, 1) 0%,
       rgba(0, 0, 0, 0) 30%,
@@ -100,18 +110,19 @@ section:nth-of-type(10) {
   background-position: center bottom;
 }
 
-section:nth-of-type(11) {
+section:nth-of-type(12) {
   background-color: black;
 }
 
-section:nth-of-type(12) h1 {
-  font-size: 20vw;
-  color: white;
+section:nth-of-type(13) h1 {
+  font-size: 18vw;
+  color: #76B900;
   opacity: 0.7;
   text-align: center;
+  filter: drop-shadow(0px 0px 50px rgba(255, 255, 255, 0.3));
 }
 
-section:nth-of-type(12){
+section:nth-of-type(13){
   height: 110vh;
 }
 
@@ -398,6 +409,25 @@ iframe.video {
   transition-delay: 0.45s;
 }
 
+/* Neural rendering 專用 */
+#neural-overlay {
+  cursor: pointer;
+}
+
+/* 疊放圖片 */
+#neural-overlay .nr-img {
+  position: absolute;
+  height: 100vh;
+
+  opacity: 0;
+  transition:
+    opacity 0.35s ease,
+}
+
+/* 顯示中的那一張 */
+#neural-overlay .nr-img.active {
+  opacity: 1;
+}
 
 
 /* 3D Canvas */
